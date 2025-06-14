@@ -1,7 +1,7 @@
-﻿using Biblio.Web.Exceptions;
-using Biblio.Web.Result;
+﻿using Biblio.Web.Result;
 using Microsoft.Data.SqlClient;
 using System.Linq.Expressions;
+using Biblio.Web.Exceptions;
 
 namespace Biblio.Web.DATA
 {
@@ -28,7 +28,7 @@ namespace Biblio.Web.DATA
                 _logger.LogInformation("Obteniendo todas las categorias desde la base de datos.");
                 using (var connection = new SqlConnection(this._connString))
                 {
-                    using (var command = new SqlCommand("Seguridad.ObtenerCategoriaPorId", connection))
+                    using (var command = new SqlCommand("Seguridad.ObtenerCategoria", connection))
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -41,7 +41,7 @@ namespace Biblio.Web.DATA
                             {
                                 Categoria categoria = new Categoria
                                 {
-                                    CategoriaId = reader.GetInt32(0),
+                                    IdCategoria = reader.GetInt32(0),
                                     Descripcion = reader.GetString(1),
                                     Estado = reader.GetBoolean(2),
                                     FechaCreacion = reader.GetDateTime(3),
@@ -68,24 +68,57 @@ namespace Biblio.Web.DATA
                 _logger.LogError("Error al obtener las categorias desde la base de datos.");
                 Opresult = OperationResult.Failure("Error al obtener las categorias desde la base de datos.");
             }
-            return Opresult; 
+            return Opresult;
         }
-        public Task<OperationResult> GetByIdAsync(int id)
+        public async Task<OperationResult> GetByIdAsync(int id)
         {
             OperationResult Opresult = new OperationResult();
 
             try
             {
                 _logger.LogInformation($"Obteniendo la categoria con ID: {id} desde la base de datos.");
+
+                using (var connection = new SqlConnection(this._connString))
+                {
+                    using (var command = new SqlCommand("Seguridad.ObtenerCategoriaPorId", connection))
+                    {
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@p_IdCategoria", id);
+                        await connection.OpenAsync();
+                        var reader = await command.ExecuteReaderAsync();
+                        if (reader.HasRows)
+                        {
+                            reader.Read();
+                            Categoria categoria = new Categoria();
+                            {
+                                categoria.IdCategoria = reader.GetInt32(0);
+                                categoria.Descripcion = reader.GetString(1);
+                                categoria.Estado = reader.GetBoolean(2);
+                                categoria.FechaCreacion = reader.GetDateTime(3);
+                                categoria.UsuarioCreacionId = reader.GetInt32(4);
+                                categoria.FechaMod = reader.IsDBNull(5) ? null : reader.GetDateTime(5);
+                                categoria.UsuarioMod = reader.IsDBNull(6) ? null : reader.GetInt32(6);
+                                categoria.UsuarioElimino = reader.IsDBNull(7) ? null : reader.GetInt32(7);
+                                categoria.FechaElimino = reader.IsDBNull(8) ? null : reader.GetDateTime(8);
+                                categoria.Eliminado = reader.IsDBNull(9) ? null : reader.GetBoolean(9);
+                            }
+                            Opresult = OperationResult.Success("Categoria obtenida correctamente.", categoria);
+                        }
+                        else
+                        {
+                            Opresult = OperationResult.Failure($"No se encontró la categoria por ID {id}.");
+                        }
+                    }
+                }
             }
             catch (Exception)
             {
 
-                throw;
+                OperationResult.Failure($"Error al obtener la categoria con ID {id} desde la base de datos.");
             }
-            return Task.FromResult(Opresult);
+            return Opresult;
         }
-        public async Task<OperationResult> AddAsync(Categoria categoria, OperationResult operationResult)
+        public async Task<OperationResult> AddAsync(Categoria categoria)
         {
             OperationResult Opresult = new OperationResult();
             try
@@ -155,7 +188,7 @@ namespace Biblio.Web.DATA
                     using (var command = new SqlCommand("Seguridad.ActualizandoCategoria", connection))
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@p_IdCategoria", categoria.CategoriaId);
+                        command.Parameters.AddWithValue("@p_IdCategoria", categoria.IdCategoria);
                         command.Parameters.AddWithValue("@p_Descripcion", categoria.Descripcion);
                         command.Parameters.AddWithValue("@p_Estado", categoria.Estado);
                         command.Parameters.AddWithValue("@p_FechaMod", categoria.FechaMod);
@@ -186,9 +219,5 @@ namespace Biblio.Web.DATA
             return Opresult;
         }
 
-        public Task<OperationResult> AddAsync(Categoria categoria)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
