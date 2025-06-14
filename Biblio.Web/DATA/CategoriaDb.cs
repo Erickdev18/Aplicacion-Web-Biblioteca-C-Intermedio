@@ -19,19 +19,56 @@ namespace Biblio.Web.DATA
             _configuration = configuration;
             _logger = logger;
         }
-        public Task<OperationResult> GetAllAsync()
+        public async Task<OperationResult> GetAllAsync()
         {
             OperationResult Opresult = new OperationResult();
+
             try
             {
                 _logger.LogInformation("Obteniendo todas las categorias desde la base de datos.");
+                using (var connection = new SqlConnection(this._connString))
+                {
+                    using (var command = new SqlCommand("Seguridad.ObtenerCategoriaPorId", connection))
+                    {
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        await connection.OpenAsync();
+                        var reader = command.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            List<Categoria> categorias = new List<Categoria>();// se puede usar hashset<categoria> para evitar elementos duplicados
+                            while (reader.Read())
+                            {
+                                Categoria categoria = new Categoria
+                                {
+                                    CategoriaId = reader.GetInt32(0),
+                                    Descripcion = reader.GetString(1),
+                                    Estado = reader.GetBoolean(2),
+                                    FechaCreacion = reader.GetDateTime(3),
+                                    UsuarioCreacionId = reader.GetInt32(4),
+                                    FechaMod = reader.IsDBNull(5) ? null : reader.GetDateTime(5),
+                                    UsuarioMod = reader.IsDBNull(6) ? null : reader.GetInt32(6),
+                                    UsuarioElimino = reader.IsDBNull(7) ? null : reader.GetInt32(7),
+                                    FechaElimino = reader.IsDBNull(8) ? null : reader.GetDateTime(8),
+                                    Eliminado = reader.IsDBNull(9) ? null : reader.GetBoolean(9)
+                                };
+                                categorias.Add(categoria);
+                            }
+                            Opresult = OperationResult.Success("Categorias obtenidas correctamente.", categorias);
+                        }
+                        else
+                        {
+                            Opresult = OperationResult.Failure("No se encontraron categorias.");
+                        }
+                    }
+                }
             }
             catch (Exception)
             {
-
-                throw;
+                _logger.LogError("Error al obtener las categorias desde la base de datos.");
+                Opresult = OperationResult.Failure("Error al obtener las categorias desde la base de datos.");
             }
-            return Task.FromResult(Opresult);
+            return Opresult; 
         }
         public Task<OperationResult> GetByIdAsync(int id)
         {
@@ -122,7 +159,7 @@ namespace Biblio.Web.DATA
                         command.Parameters.AddWithValue("@p_Descripcion", categoria.Descripcion);
                         command.Parameters.AddWithValue("@p_Estado", categoria.Estado);
                         command.Parameters.AddWithValue("@p_FechaMod", categoria.FechaMod);
-                        command.Parameters.AddWithValue("@p_UsuarioModId", categoria.UsuarioModId);
+                        command.Parameters.AddWithValue("@p_UsuarioMod", categoria.UsuarioMod);
 
                         SqlParameter p_Result = new SqlParameter("@p_Result", System.Data.SqlDbType.VarChar)
                         {
@@ -131,7 +168,7 @@ namespace Biblio.Web.DATA
 
                         command.Parameters.Add(p_Result);
                         await connection.OpenAsync();
-                       await command.ExecuteNonQueryAsync(); 
+                        await command.ExecuteNonQueryAsync();
                         var result = (string)p_Result.Value;
                         if (result != "Ok")
                             Opresult = OperationResult.Failure($"Error al actualizar la categoria: {result}");
@@ -144,7 +181,7 @@ namespace Biblio.Web.DATA
             {
 
                 _logger.LogError($"Error actualizando la categoria {ex.Message}", ex.ToString());
-               Opresult = OperationResult.Failure($"Error actualizando la categoria: {ex.Message}");
+                Opresult = OperationResult.Failure($"Error actualizando la categoria: {ex.Message}");
             }
             return Opresult;
         }
