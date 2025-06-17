@@ -7,15 +7,19 @@ namespace Biblio.Web.DATA
 {
     public class CategoriaDao : ICategoriaDao
     {
-        private readonly string _connString;
+        //private readonly string _connString;
+        private string _connString;
         private readonly IConfiguration _configuration;
         private readonly ILogger<CategoriaDao> _logger;
 
-        public CategoriaDao(string connString,
+        public CategoriaDao(/*string connString,*/
                             IConfiguration configuration,
                             ILogger<CategoriaDao> logger)
         {
-            _connString = connString;
+            //_connString = connString;
+            _connString = configuration.GetConnectionString("biblioConn")
+               ?? throw new InvalidOperationException("La cadena de conexión 'biblioConn' no está configurada.");
+
             _configuration = configuration;
             _logger = logger;
         }
@@ -63,9 +67,12 @@ namespace Biblio.Web.DATA
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _logger.LogError("Error al obtener las categorias desde la base de datos.");
+                // estaba   _logger.LogError("Error al obtener las categorias desde la base de datos.", ex.ToString()); pero se quedaba con error, fue corregida con la siguiente manera:
+                // _logger.LogError(ex, "Error al obtener las categorias desde la base de datos.");
+                _logger.LogError(ex, "Error al obtener las categorias desde la base de datos.");
+
                 Opresult = OperationResult.Failure("Error al obtener las categorias desde la base de datos.");
             }
             return Opresult;
@@ -111,9 +118,9 @@ namespace Biblio.Web.DATA
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError($"Error al obtener la categoria con ID {id} desde la base de datos.", ex.ToString());
                 OperationResult.Failure($"Error al obtener la categoria con ID {id} desde la base de datos.");
             }
             return Opresult;

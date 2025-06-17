@@ -1,3 +1,5 @@
+using Biblio.Web.DATA;
+
 namespace Biblio.Web
 {
     public class Program
@@ -5,8 +7,12 @@ namespace Biblio.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            
+            
             // Add services to the container.
+            // aqui es que se registran todas las inyecciones de dependencias
+            builder.Services.AddScoped<ICategoriaDao, CategoriaDao>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
