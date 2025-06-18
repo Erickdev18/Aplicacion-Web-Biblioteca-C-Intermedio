@@ -9,7 +9,7 @@
         public int? Ejemplares { get; set; }
         public string? Editorial { get; set; }
         public int CategoriaId { get; set; }
-        public int? EstadoID { get; set; }
+        public bool? Estado { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int UsuarioCreacionId { get; set; }
         public DateTime? FechaMod { get; set; }

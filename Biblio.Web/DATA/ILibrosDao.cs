@@ -6,8 +6,8 @@ namespace Biblio.Web.DATA
     {
         Task<OperationResult> GetAllAsync();
         Task<OperationResult> GetByIdAsync(int id);
-        Task<OperationResult> AddAsync(Categoria categoria);
+        Task<OperationResult> AddAsync(Libros libros);
 
-        Task<OperationResult> UpdateAsync(Categoria categoria);
+        Task<OperationResult> UpdateAsync(Libros libros);
     }
 }
