@@ -152,13 +152,12 @@ namespace Biblio.Web.DATA
                     using (var command = new SqlCommand("Seguridad.GuardandoLibro", connection))
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@p_IdLibro", libros.LibroID);
                         command.Parameters.AddWithValue("@p_Titulo", libros.Titulo);
                         command.Parameters.AddWithValue("@p_Autor", libros.Autor);
                         command.Parameters.AddWithValue("@p_ISBN", libros.ISBN);
                         command.Parameters.AddWithValue("@p_Ejemplares", libros.Ejemplares ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@p_Editorial", libros.Editorial ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@p_CategoriaId", libros.IdCategoria);
+                        command.Parameters.AddWithValue("@p_IdCategoria", libros.IdCategoria);
                         command.Parameters.AddWithValue("@p_EstadoID", libros.Estado);
                         command.Parameters.AddWithValue("@p_UsuarioCreacionId", libros.UsuarioCreacionId);
                         command.Parameters.AddWithValue("@p_FechaCreacion", libros.FechaCreacion);
@@ -209,7 +208,7 @@ namespace Biblio.Web.DATA
                         command.Parameters.AddWithValue("@p_ISBN", libros.ISBN);
                         command.Parameters.AddWithValue("@p_Ejemplares", libros.Ejemplares ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@p_Editorial", libros.Editorial ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@p_CategoriaId", libros.IdCategoria);
+                        command.Parameters.AddWithValue("@p_IdCategoria", libros.IdCategoria);
                         command.Parameters.AddWithValue("@p_EstadoID", libros.Estado);
                         command.Parameters.AddWithValue("@p_UsuarioMod", libros.UsuarioMod ?? (object)DBNull.Value);
                         command.Parameters.AddWithValue("@p_FechaMod", libros.FechaMod ?? (object)DBNull.Value);
