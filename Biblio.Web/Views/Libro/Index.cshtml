@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Biblio.Web.DATA.Categoria>
+﻿@model IEnumerable<Biblio.Web.DATA.Libros>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdCategoria)
+                @Html.DisplayNameFor(model => model.LibroID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ejemplares)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Editorial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCategoria)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Estado)
@@ -49,10 +64,25 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IdCategoria)
+                @Html.DisplayFor(modelItem => item.LibroID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Descripcion)
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Autor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ejemplares)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Editorial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCategoria)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Estado)

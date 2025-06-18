@@ -45,7 +45,7 @@ namespace Biblio.Web.DATA
                             {
                                 Categoria categoria = new Categoria
                                 {
-                                    CategoriaId = reader.GetInt32(0),
+                                    IdCategoria = reader.GetInt32(0),
                                     Descripcion = reader.GetString(1),
                                     Estado = reader.GetBoolean(2),
                                     FechaCreacion = reader.GetDateTime(3),
@@ -98,7 +98,7 @@ namespace Biblio.Web.DATA
                             reader.Read();
                             Categoria categoria = new Categoria();
                             {
-                                categoria.CategoriaId = reader.GetInt32(0);
+                                categoria.IdCategoria = reader.GetInt32(0);
                                 categoria.Descripcion = reader.GetString(1);
                                 categoria.Estado = reader.GetBoolean(2);
                                 categoria.FechaCreacion = reader.GetDateTime(3);
@@ -207,7 +207,7 @@ namespace Biblio.Web.DATA
                     using (var command = new SqlCommand("Seguridad.ActualizandoCategoria", connection))
                     {
                         command.CommandType = System.Data.CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@p_IdCategoria", categoria.CategoriaId);
+                        command.Parameters.AddWithValue("@p_IdCategoria", categoria.IdCategoria);
                         command.Parameters.AddWithValue("@p_Descripcion", categoria.Descripcion);
                         command.Parameters.AddWithValue("@p_Estado", categoria.Estado);
                         command.Parameters.AddWithValue("@p_FechaMod", categoria.FechaMod);
