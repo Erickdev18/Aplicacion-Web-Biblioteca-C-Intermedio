@@ -131,11 +131,22 @@ namespace Biblio.Web.DATA
             try
             {
                 //if (categoria == null)
+                //    return OperationResult.Failure("La categoría no puede ser nula.");
+                //if (string.IsNullOrWhiteSpace(categoria.Descripcion))
+                //    return OperationResult.Failure("La descripción es obligatoria.");
+                //if (categoria.FechaCreacion == default)
+                //    return OperationResult.Failure("La fecha de creación es obligatoria.");
+                //if (categoria.UsuarioCreacionId == 0)
+                //    return OperationResult.Failure("El usuario de creación es obligatorio.");
 
-                //    Opresult = OperationResult.Failure("La categoria no puede ser nula.");
+                //_logger.LogInformation($"Insertando: Descripcion={categoria.Descripcion}, Estado={categoria.Estado}, FechaCreacion={categoria.FechaCreacion}, UsuarioCreacionId={categoria.UsuarioCreacionId}");
 
-                //if (string.IsNullOrWhiteSpace(categoria!.Descripcion))
-                //        Opresult = OperationResult.Failure("La descripcion de la categoria no puede ser nula o vacia.");
+                if (categoria == null)
+
+                    Opresult = OperationResult.Failure("La categoria no puede ser nula.");
+
+                if (string.IsNullOrWhiteSpace(categoria!.Descripcion))
+                    Opresult = OperationResult.Failure("La descripcion de la categoria no puede ser nula o vacia.");
 
 
                 using (var connection = new SqlConnection(this._connString))
@@ -148,8 +159,9 @@ namespace Biblio.Web.DATA
                         command.Parameters.AddWithValue("@p_FechaCreacion", categoria.FechaCreacion);
                         command.Parameters.AddWithValue("@p_UsuarioCreacionId", categoria.UsuarioCreacionId);
 
-                        SqlParameter p_Result = new SqlParameter("@p_Result", System.Data.SqlDbType.VarChar)
+                        SqlParameter p_Result = new SqlParameter("@p_Result", System.Data.SqlDbType.VarChar)//Estaba dando error porque era de tipo int
                         {
+                            Size= 4000, // Asegúrate de que el tamaño sea suficiente para el mensaje de error
                             Direction = System.Data.ParameterDirection.Output
                         };
 
@@ -203,6 +215,7 @@ namespace Biblio.Web.DATA
 
                         SqlParameter p_Result = new SqlParameter("@p_Result", System.Data.SqlDbType.VarChar)
                         {
+                            Size = 4000, // Asegúrate de que el tamaño sea suficiente para el mensaje de error
                             Direction = System.Data.ParameterDirection.Output
                         };
 
