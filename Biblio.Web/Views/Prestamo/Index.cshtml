@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Biblio.Web.DATA.Prestamo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPrestamo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdEstadoPrestamo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LibroID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaDevolucion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaConfirmacionDevolucion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstadoEntregado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstadoRecibido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaCreacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UsuarioCreacionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaMod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UsuarioMod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaElimino)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UsuarioElimino)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Eliminado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPrestamo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Codigo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEstadoPrestamo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibroID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaDevolucion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaConfirmacionDevolucion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstadoEntregado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstadoRecibido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCreacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsuarioCreacionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaMod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsuarioMod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaElimino)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UsuarioElimino)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Eliminado)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
