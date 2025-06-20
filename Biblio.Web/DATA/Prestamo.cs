@@ -8,8 +8,8 @@
         public int? LibroID { get; set; }
         public DateTime? FechaDevolucion { get; set; }
         public DateTime? FechaConfirmacionDevolucion { get; set; }
-        public string? EstadoEntregado { get; set; }
-        public string? EstadoRecibido { get; set; }
+        public bool EstadoEntregado { get; set; }
+        public bool EstadoRecibido { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int UsuarioCreacionId { get; set; }
         public DateTime? FechaMod { get; set; }

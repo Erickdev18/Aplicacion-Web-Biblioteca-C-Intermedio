@@ -47,8 +47,8 @@ namespace Biblio.Web.DATA
                                     LibroID = reader.GetInt32(3),
                                     FechaDevolucion = reader.GetDateTime(4),
                                     FechaConfirmacionDevolucion = reader.GetDateTime(5),
-                                    EstadoEntregado = reader.GetString(6),
-                                    EstadoRecibido = reader.GetString(7),
+                                    EstadoEntregado = reader.GetBoolean(6),
+                                    EstadoRecibido = reader.GetBoolean(7),
                                     FechaCreacion = reader.GetDateTime(8),
                                     UsuarioCreacionId = reader.GetInt32(9),
                                     FechaMod = reader.IsDBNull(10) ? null : reader.GetDateTime(10),
@@ -107,8 +107,8 @@ namespace Biblio.Web.DATA
                                 prestamo.LibroID = reader.GetInt32(3);
                                 prestamo.FechaDevolucion = reader.GetDateTime(4);
                                 prestamo.FechaConfirmacionDevolucion = reader.GetDateTime(5);
-                                prestamo.EstadoEntregado = reader.GetString(6);
-                                prestamo.EstadoRecibido = reader.GetString(7);
+                                prestamo.EstadoEntregado = reader.GetBoolean(6);
+                                prestamo.EstadoRecibido = reader.GetBoolean(7);
                                 prestamo.FechaCreacion = reader.GetDateTime(8);
                                 prestamo.UsuarioCreacionId = reader.GetInt32(9);
                                 prestamo.FechaMod = reader.IsDBNull(10) ? null : reader.GetDateTime(10);
@@ -184,45 +184,45 @@ namespace Biblio.Web.DATA
         {
             OperationResult Opresult = new OperationResult();
 
-            try
-            {
-                using (var connection = new SqlConnection(this._connString))
+                try
                 {
-                    using (var command = new SqlCommand("Seguridad.ActualizandoPrestamo", connection))
+                    using (var connection = new SqlConnection(this._connString))
                     {
-                        command.Parameters.AddWithValue("@p_IdPrestamo", prestamo.IdPrestamo);
-                        command.Parameters.AddWithValue("@p_Codigo", prestamo.Codigo);
-                        command.Parameters.AddWithValue("@p_IdEstadoPrestamo", prestamo.IdEstadoPrestamo);
-                        command.Parameters.AddWithValue("@p_IdLibro", prestamo.LibroID);
-                        command.Parameters.AddWithValue("@p_FechaDevolucion", prestamo.FechaDevolucion);
-                        command.Parameters.AddWithValue("@p_FechaConfirmacionDevolucion", prestamo.FechaConfirmacionDevolucion);
-                        command.Parameters.AddWithValue("@p_EstadoEntregado", prestamo.EstadoEntregado);
-                        command.Parameters.AddWithValue("@p_EstadoRecibido", prestamo.EstadoRecibido);
-                        command.Parameters.AddWithValue("@p_UsuarioMod", prestamo.UsuarioMod ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@p_FechaMod", prestamo.FechaMod ?? (object)DBNull.Value);
-
-                        SqlParameter p_Result = new SqlParameter("@p_Result", System.Data.SqlDbType.VarChar)
+                        using (var command = new SqlCommand("Seguridad.ActualizandoPrestamo", connection))
                         {
-                            Size = 4000,
-                            Direction = System.Data.ParameterDirection.Output
-                        };
-                        command.Parameters.Add(p_Result);
-                        await connection.OpenAsync();
-                        await command.ExecuteNonQueryAsync();
-                        var result = (string)p_Result.Value;
-                        if (result != "El préstamo fue actualizado correctamente.")
-                            Opresult = OperationResult.Failure($"Error al actualizar el préstamo: {result}");
-                        else
-                            Opresult = OperationResult.Success(result);
+                            command.Parameters.AddWithValue("@p_IdPrestamo", prestamo.IdPrestamo);
+                            command.Parameters.AddWithValue("@p_Codigo", prestamo.Codigo);
+                            command.Parameters.AddWithValue("@p_IdEstadoPrestamo", prestamo.IdEstadoPrestamo);
+                            command.Parameters.AddWithValue("@p_IdLibro", prestamo.LibroID);
+                            command.Parameters.AddWithValue("@p_FechaDevolucion", prestamo.FechaDevolucion);
+                            command.Parameters.AddWithValue("@p_FechaConfirmacionDevolucion", prestamo.FechaConfirmacionDevolucion);
+                            command.Parameters.AddWithValue("@p_EstadoEntregado", prestamo.EstadoEntregado);
+                            command.Parameters.AddWithValue("@p_EstadoRecibido", prestamo.EstadoRecibido);
+                            command.Parameters.AddWithValue("@p_UsuarioMod", prestamo.UsuarioMod ?? (object)DBNull.Value);
+                            command.Parameters.AddWithValue("@p_FechaMod", prestamo.FechaMod ?? (object)DBNull.Value);
+
+                            SqlParameter p_Result = new SqlParameter("@p_Result", System.Data.SqlDbType.VarChar)
+                            {
+                                Size = 4000,
+                                Direction = System.Data.ParameterDirection.Output
+                            };
+                            command.Parameters.Add(p_Result);
+                            await connection.OpenAsync();
+                            await command.ExecuteNonQueryAsync();
+                            var result = (string)p_Result.Value;
+                            if (result != "El préstamo fue actualizado correctamente.")
+                                Opresult = OperationResult.Failure($"Error al actualizar el préstamo: {result}");
+                            else
+                                Opresult = OperationResult.Success(result);
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error actualizando un prestamo {ex.Message}", ex.ToString());
-                Opresult = OperationResult.Failure("Error al actualizar el prestamo.");
-            }
-            return Opresult;
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error actualizando un prestamo {ex.Message}", ex.ToString());
+                    Opresult = OperationResult.Failure("Error al actualizar el prestamo.");
+                }
+                return Opresult;
         }
     }
 }
