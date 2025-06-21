@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Biblio.Web.Controllers
 {
-    public class UsuarioController : Controller
+    public class PenalizacionController : Controller
     {
-        private readonly IUsuarioDao _usuarioDao;
-        public UsuarioController(IUsuarioDao usuarioDao)
+        private readonly IPenalizacionDao _penalizacionDao;
+        public PenalizacionController(IPenalizacionDao penalizacionDao)
         {
-            this._usuarioDao = usuarioDao;
+            this._penalizacionDao = penalizacionDao;
         }
-        // GET: UsuarioController
+        // GET: PenalizacionController
         public async Task<IActionResult> Index()
         {
-            var result = await this._usuarioDao.GetAllAsync();
+            var result = await this._penalizacionDao.GetAllAsync();
 
             if (result.IsSuccess)
             {
@@ -23,32 +23,31 @@ namespace Biblio.Web.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, result.Message);
-                return View(new List<Usuario>());
+                return View(new List<Penalizacion>());
 
             }
         }
 
-        // GET: UsuarioController/Details/5
+        // GET: PenalizacionController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: UsuarioController/Create
+        // GET: PenalizacionController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: UsuarioController/Create
+        // POST: PenalizacionController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Usuario usuario)
+        public async Task<IActionResult> Create(Penalizacion penalizacion)
         {
             try
             {
-
-                var result = await this._usuarioDao.AddAsync(usuario);
+                var result = await this._penalizacionDao.AddAsync(penalizacion);
 
                 if (result.IsSuccess)
                 {
@@ -59,7 +58,7 @@ namespace Biblio.Web.Controllers
                 {
                     // If the operation failed, add an error to the ModelState and return the view with the model
                     ModelState.AddModelError(string.Empty, result.Message);
-                    return View(usuario);
+                    return View(penalizacion);
                 }
                 //return RedirectToAction(nameof(Index)); no se si usa el result de la operacion
             }
@@ -69,20 +68,20 @@ namespace Biblio.Web.Controllers
             }
         }
 
-        // GET: UsuarioController/Edit/5
+        // GET: PenalizacionController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: UsuarioController/Edit/5
+        // POST: PenalizacionController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, Usuario usuario)
+        public async Task<IActionResult> Edit(int id, Penalizacion penalizacion)
         {
             try
             {
-                var result = await _usuarioDao.UpdateAsync(usuario);
+                var result = await _penalizacionDao.UpdateAsync(penalizacion);
 
                 if (result.IsSuccess)
                 {
@@ -91,22 +90,22 @@ namespace Biblio.Web.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
-                    return View(usuario);
+                    return View(penalizacion);
                 }
             }
             catch
             {
-                return View(usuario);
+                return View();
             }
         }
 
-        // GET: UsuarioController/Delete/5
+        // GET: PenalizacionController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: UsuarioController/Delete/5
+        // POST: PenalizacionController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

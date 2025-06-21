@@ -18,9 +18,9 @@
         public int UsuarioCreacionId { get; set; }
         public DateTime? FechaMod { get; set; }
         public int? UsuarioMod { get; set; }
-        public int UsuarioElimino { get; set; }
+        public int? UsuarioElimino { get; set; }
         public DateTime? FechaElimino { get; set; }
-        public bool? Eliminado { get; set; }
+        public bool Eliminado { get; set; }
 
     }
 }
