@@ -14,7 +14,9 @@ namespace Biblio.Web
             builder.Services.AddScoped<ICategoriaDao, CategoriaDao>();
             builder.Services.AddScoped<ILibrosDao, LibrosDao>();
             builder.Services.AddScoped<IPrestamoDao, PrestamoDao>();
-            builder.Services.AddScoped<IEstadoPrestamo, EstadoPrestamoDao>();
+            builder.Services.AddScoped<IEstadoPrestamoDao, EstadoPrestamoDao>();
+            builder.Services.AddScoped<IRolDao, RolDao>();
+            builder.Services.AddScoped<IUsuarioDao, UsuarioDao>();
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();

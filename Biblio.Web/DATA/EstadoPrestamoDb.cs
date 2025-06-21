@@ -5,7 +5,7 @@ using Biblio.Web.Exceptions;
 
 namespace Biblio.Web.DATA
 {
-    public class EstadoPrestamoDao : IEstadoPrestamo
+    public class EstadoPrestamoDao : IEstadoPrestamoDao
     {
         private string _connString;
         private readonly IConfiguration _configuration;

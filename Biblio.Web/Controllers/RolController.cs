@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 
 namespace Biblio.Web.Controllers
 {
-    public class EstadoPrestamoController : Controller
+    public class RolController : Controller
     {
-        private readonly IEstadoPrestamoDao _EstadoPrestamoDao;
-        public EstadoPrestamoController(IEstadoPrestamoDao estadoPrestamoDao)
+        private readonly IRolDao _rolDao;
+        public RolController(IRolDao rolDao)
         {
-            this._EstadoPrestamoDao = estadoPrestamoDao;
+            this._rolDao = rolDao;
         }
-
-        // GET: EstadoPrestamoController
-        public async Task<IActionResult> Index()
+        // GET: RolController
+        public async Task<ActionResult> Index()
         {
-            var result = await this._EstadoPrestamoDao.GetAllAsync();
+            var result = await this._rolDao.GetAllAsync();
 
             if (result.IsSuccess)
             {
@@ -25,40 +24,39 @@ namespace Biblio.Web.Controllers
             else
             {
                 ModelState.AddModelError(string.Empty, result.Message);
-                return View(new List<EstadoPrestamo>());
+                return View(new List<Rol>());
             }
-
         }
 
-        // GET: EstadoPrestamoController/Details/5
+        // GET: RolController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: EstadoPrestamoController/Create
+        // GET: RolController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: EstadoPrestamoController/Create
+        // POST: RolController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EstadoPrestamo estadoPrestamo)
+        public async Task<IActionResult> Create(Rol rol)
         {
             try
             {
-                var result = await this._EstadoPrestamoDao.AddAsync(estadoPrestamo);
+                var result = await this._rolDao.AddAsync(rol);
 
-                if(result.IsSuccess)
+                if (result.IsSuccess)
                 {
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
-                    return View(estadoPrestamo);
+                    return View(rol);
                 }
             }
             catch
@@ -67,13 +65,13 @@ namespace Biblio.Web.Controllers
             }
         }
 
-        // GET: EstadoPrestamoController/Edit/5
+        // GET: RolController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: EstadoPrestamoController/Edit/5
+        // POST: RolController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -88,13 +86,13 @@ namespace Biblio.Web.Controllers
             }
         }
 
-        // GET: EstadoPrestamoController/Delete/5
+        // GET: RolController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: EstadoPrestamoController/Delete/5
+        // POST: RolController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
